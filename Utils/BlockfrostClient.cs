@@ -8,10 +8,9 @@ namespace AdaRewardsReporter.Core.Utils
 {
     public class BlockfrostClient : ICardanoBlockchainClient
     {
-        public readonly string _networkBaseUrl;
+        private readonly string _networkBaseUrl;
         private readonly string _authenticationHeaderKey;
         private readonly string _apiKey;
-        private readonly IConfiguration _configuration;
         private readonly RestClient _client;
 
         public BlockfrostClient(IConfiguration configuration)
@@ -24,18 +23,18 @@ namespace AdaRewardsReporter.Core.Utils
 
         public async Task<T> QueryAsync<T>(string resourceUri)
         {
-            var request = new RestRequest(resourceUri);
-            T response;
             try
             {
-                response = await _client.GetAsync<T>(request);
+                var request = new RestRequest(resourceUri);
+                var response = await _client.GetAsync<T>(request);
+                return response;
             }
-            catch (System.Exception exception)
+            catch (Exception exception)
             {
-                System.Console.WriteLine($"{exception}");
-                throw exception;
+                Console.WriteLine($"Exception thrown in {nameof(BlockfrostClient)}.{nameof(QueryAsync)}");
+                Console.WriteLine($"{exception}");
+                throw;
             }
-            return response;
         }
 
         private RestClient BuildClient()
