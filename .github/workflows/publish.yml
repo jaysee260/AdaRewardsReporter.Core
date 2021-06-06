@@ -1,4 +1,4 @@
-name: publish to nuget
+name: Publish to NuGet
 on:
   push:
     branches: [ nuget-publish-action ]
@@ -15,12 +15,12 @@ jobs:
           dotnet-version: 5.0.*
 
       # Publish
-      - name: publish on version change
+      - name: Publish on version change
         id: publish_nuget
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
-          PROJECT_FILE_PATH: .\AdaRewardsReporter.Core.csproj
+          PROJECT_FILE_PATH: ./AdaRewardsReporter.Core.csproj
           
           # NuGet package id, used for version detection & defaults to project name
           PACKAGE_NAME: AdaRewardsReporter.Core
