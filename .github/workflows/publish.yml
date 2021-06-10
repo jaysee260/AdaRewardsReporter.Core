@@ -1,0 +1,26 @@
+name: Publish to NuGet
+on:
+  push:
+    branches: [ master ]
+jobs:
+  publish:
+    name: Build, Pack & Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.*
+
+      # Publish
+      - name: Publish on version change
+        id: publish_nuget
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: ./AdaRewardsReporter.Core.csproj
+          PACKAGE_NAME: AdaRewardsReporter.Core
+          VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
+          NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+          # INCLUDE_SYMBOLS: true
